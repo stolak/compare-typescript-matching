@@ -6,9 +6,16 @@ export class ApiResponse<T> {
 
   constructor(success: boolean, data?: T, message?: string, error?: string) {
     this.success = success;
-    this.data = data;
-    this.message = message;
-    this.error = error;
+    // Only assign if value is not undefined to satisfy exactOptionalPropertyTypes
+    if (data !== undefined) {
+      this.data = data;
+    }
+    if (message !== undefined) {
+      this.message = message;
+    }
+    if (error !== undefined) {
+      this.error = error;
+    }
   }
 
   static success<T>(data: T, message?: string): ApiResponse<T> {
@@ -16,7 +23,12 @@ export class ApiResponse<T> {
   }
 
   static error(message: string, error?: string): ApiResponse<null> {
-    return new ApiResponse(false, undefined, message, error);
+    const response = new ApiResponse<null>(false);
+    response.message = message;
+    if (error !== undefined) {
+      response.error = error;
+    }
+    return response;
   }
 }
 

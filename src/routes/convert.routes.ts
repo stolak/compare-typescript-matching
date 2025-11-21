@@ -1,6 +1,8 @@
 import { Router } from "express";
 import { convertUnstructuredController } from "../controllers/convert.controller";
+import { convertPdfController } from "../controllers/pdf.controller";
 import { validateConvertRequest } from "../middleware/validateConvert";
+import { upload } from "../middleware/upload";
 
 const router = Router();
 
@@ -66,6 +68,50 @@ const router = Router();
  *               $ref: '#/components/schemas/ErrorResponse'
  */
 router.post("/convert", validateConvertRequest, convertUnstructuredController);
+
+/**
+ * @swagger
+ * /api/convert-pdf:
+ *   post:
+ *     summary: Convert PDF file by forwarding to external service
+ *     tags: [Conversion]
+ *     description: |
+ *       Accepts a PDF file upload and forwards it to an external conversion service
+ *       at localhost:5003/convert, then returns the response from that service.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         multipart/form-data:
+ *           schema:
+ *             type: object
+ *             required: [file]
+ *             properties:
+ *               file:
+ *                 type: string
+ *                 format: binary
+ *                 description: PDF file to convert
+ *     responses:
+ *       200:
+ *         description: Successfully forwarded PDF and received response from external service
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               description: Response from external conversion service
+ *       400:
+ *         description: Bad request - No file provided or invalid file type
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorResponse'
+ *       500:
+ *         description: Internal server error or external service error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorResponse'
+ */
+router.post("/convert-pdf", upload.single("file"), convertPdfController);
 
 export default router;
 

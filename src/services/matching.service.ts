@@ -1,10 +1,10 @@
-import { extractNarration } from "../utils/extractNarration";
-import { getEmbedding, cosineSimilarity } from "./embeddings.service";
+import { extractNarration } from "../utils/extractNarration.js";
+import { getEmbedding, cosineSimilarity } from "./embeddings.service.js";
 import type {
   BankRecord,
   MatchResult,
   MatchingReport,
-} from "../types/index";
+} from "../types/index.js";
 
 export async function matchRecords(
   record1: BankRecord[],

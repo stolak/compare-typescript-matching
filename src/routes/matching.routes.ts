@@ -1,6 +1,6 @@
 import { Router } from "express";
-import { matchRecordsController } from "../controllers/matching.controller";
-import { validateMatchRequest } from "../middleware/validate";
+import { matchRecordsController } from "../controllers/matching.controller.js";
+import { validateMatchRequest } from "../middleware/validate.js";
 
 const router = Router();
 

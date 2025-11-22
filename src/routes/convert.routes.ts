@@ -1,8 +1,8 @@
 import { Router } from "express";
-import { convertUnstructuredController } from "../controllers/convert.controller";
-import { convertPdfController } from "../controllers/pdf.controller";
-import { validateConvertRequest } from "../middleware/validateConvert";
-import { upload } from "../middleware/upload";
+import { convertUnstructuredController } from "../controllers/convert.controller.js";
+import { convertPdfController } from "../controllers/pdf.controller.js";
+import { validateConvertRequest } from "../middleware/validateConvert.js";
+import { upload } from "../middleware/upload.js";
 
 const router = Router();
 

@@ -1,7 +1,7 @@
 import "dotenv/config";
-import app from "./app";
-import { config } from "./config/index";
-import log from "./utils/logger";
+import app from "./app.js";
+import { config } from "./config/index.js";
+import log from "./utils/logger.js";
 
 // Error handling
 process.on("uncaughtException", (error) => {

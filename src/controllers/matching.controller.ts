@@ -1,8 +1,8 @@
 import type { Request, Response, NextFunction } from "express";
-import { matchRecords } from "../services/matching.service";
-import { ApiResponse } from "../utils/ApiResponse";
-import { ApiError } from "../utils/ApiError";
-import type { BankRecord } from "../types/index";
+import { matchRecords } from "../services/matching.service.js";
+import { ApiResponse } from "../utils/ApiResponse.js";
+import { ApiError } from "../utils/ApiError.js";
+import type { BankRecord } from "../types/index.js";
 
 export async function matchRecordsController(
   req: Request,

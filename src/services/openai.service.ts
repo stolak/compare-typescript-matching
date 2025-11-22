@@ -1,7 +1,7 @@
 import OpenAI from "openai";
-import type { BankRecord } from "../types/index";
-import log from "../utils/logger";
-import { config } from "../config/index";
+import type { BankRecord } from "../types/index.js";
+import log from "../utils/logger.js";
+import { config } from "../config/index.js";
 
 if (!config.openai.apiKey) {
   log.warn("OPENAI_API_KEY is not set. Convert endpoint will not work.");

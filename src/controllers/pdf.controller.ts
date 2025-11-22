@@ -1,7 +1,7 @@
 import type { Request, Response, NextFunction } from "express";
-import { forwardPdfToExternalService } from "../services/pdf.service";
-import { ApiResponse } from "../utils/ApiResponse";
-import log from "../utils/logger";
+import { forwardPdfToExternalService } from "../services/pdf.service.js";
+import { ApiResponse } from "../utils/ApiResponse.js";
+import log from "../utils/logger.js";
 
 export async function convertPdfController(
   req: Request,

@@ -1,6 +1,6 @@
 import { Router } from "express";
-import matchingRoutes from "./matching.routes";
-import convertRoutes from "./convert.routes";
+import matchingRoutes from "./matching.routes.js";
+import convertRoutes from "./convert.routes.js";
 
 const router = Router();
 

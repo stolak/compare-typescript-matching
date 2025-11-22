@@ -1,6 +1,6 @@
 import type { Request, Response, NextFunction } from "express";
-import { ApiError } from "../utils/ApiError";
-import type { BankRecord } from "../types/index";
+import { ApiError } from "../utils/ApiError.js";
+import type { BankRecord } from "../types/index.js";
 
 export interface MatchRequest {
   record1: BankRecord[];

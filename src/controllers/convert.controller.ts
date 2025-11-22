@@ -1,6 +1,6 @@
 import type { Request, Response, NextFunction } from "express";
-import { convertToBankRecords } from "../services/openai.service";
-import { ApiResponse } from "../utils/ApiResponse";
+import { convertToBankRecords } from "../services/openai.service.js";
+import { ApiResponse } from "../utils/ApiResponse.js";
 
 export async function convertUnstructuredController(
   req: Request,

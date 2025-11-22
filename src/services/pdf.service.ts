@@ -1,4 +1,4 @@
-import log from "../utils/logger";
+import log from "../utils/logger.js";
 
 const EXTERNAL_CONVERT_URL = process.env.EXTERNAL_CONVERT_URL || "http://localhost:5003/convert";
 

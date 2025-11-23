@@ -15,7 +15,7 @@ export const swaggerOptions: swaggerJsdoc.Options = {
     },
     servers: [
       {
-        url: `http://localhost:${config.port}`,
+        url: config.serverUrl,
         description: "Development server",
       },
     ],
@@ -185,7 +185,8 @@ export const swaggerOptions: swaggerJsdoc.Options = {
             },
             message: {
               type: "string",
-              example: "Successfully converted unstructured data to BankRecord format",
+              example:
+                "Successfully converted unstructured data to BankRecord format",
             },
           },
         },
@@ -209,4 +210,3 @@ export const swaggerOptions: swaggerJsdoc.Options = {
 };
 
 export const swaggerSpec = swaggerJsdoc(swaggerOptions);
-

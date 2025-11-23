@@ -6,6 +6,7 @@ import type { BankRecord } from "./matcher.js";
 
 const app = express();
 const PORT = process.env.PORT || 3005;
+const SERVER_URL = process.env.SERVER_URL || `http://localhost:${PORT}`;
 
 // Middleware to parse JSON bodies
 app.use(express.json());
@@ -25,7 +26,7 @@ const swaggerOptions: swaggerJsdoc.Options = {
     },
     servers: [
       {
-        url: `http://localhost:${PORT}`,
+        url: SERVER_URL,
         description: "Development server",
       },
     ],

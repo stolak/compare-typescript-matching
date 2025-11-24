@@ -14,7 +14,7 @@ const router = Router();
  *     tags: [Conversion]
  *     description: |
  *       Receives an unstructured array of objects and uses OpenAI to convert them
- *       into the structured BankRecord format with itemid, details, and amount fields.
+ *       into the structured BankRecord2 format with itemid, details, amount, date, and transactionType fields.
  *     requestBody:
  *       required: true
  *       content:
@@ -49,11 +49,15 @@ const router = Router();
  *                   - itemid: "TXN001"
  *                     details: "Payment to John Doe"
  *                     amount: 1000
+ *                     date: "2025-01-15"
+ *                     transactionType: "debit"
  *                   - itemid: "REF002"
  *                     details: "Salary credit"
  *                     amount: 500
+ *                     date: "2025-01-20"
+ *                     transactionType: "credit"
  *                 count: 2
- *               message: "Successfully converted unstructured data to BankRecord format"
+ *               message: "Successfully converted unstructured data to BankRecord2 format"
  *       400:
  *         description: Bad request - Invalid input
  *         content:

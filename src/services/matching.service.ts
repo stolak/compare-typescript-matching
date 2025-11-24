@@ -1,14 +1,43 @@
 import { extractNarration } from "../utils/extractNarration.js";
 import { getEmbedding, cosineSimilarity } from "./embeddings.service.js";
 import type {
-  BankRecord,
+  BankRecord1,
+  BankRecord2,
   MatchResult,
   MatchingReport,
 } from "../types/index.js";
 
+/**
+ * Checks if two dates are within ±5 days of each other
+ * @param date1 First date string (YYYY-MM-DD format)
+ * @param date2 Second date string (YYYY-MM-DD format)
+ * @returns true if dates are within ±5 days, false otherwise
+ */
+function isDateWithinTolerance(date1: string, date2: string): boolean {
+  try {
+    const d1 = new Date(date1);
+    const d2 = new Date(date2);
+
+    // Check if dates are valid
+    if (isNaN(d1.getTime()) || isNaN(d2.getTime())) {
+      return false;
+    }
+
+    // Calculate the absolute difference in days
+    const diffTime = Math.abs(d1.getTime() - d2.getTime());
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+    // Return true if difference is within 5 days
+    return diffDays <= 5;
+  } catch (error) {
+    // If date parsing fails, return false
+    return false;
+  }
+}
+
 export async function matchRecords(
-  record1: BankRecord[],
-  record2: BankRecord[]
+  record1: BankRecord1[],
+  record2: BankRecord2[]
 ): Promise<MatchingReport> {
   // Preprocess and embed Record2
   const embeddings2 = [];
@@ -36,14 +65,18 @@ export async function matchRecords(
       id: string;
       index: number;
       score: number;
-      record: BankRecord;
+      record: BankRecord2;
     } | null = null;
 
     for (const r2 of embeddings2) {
       // Skip if this record2 has already been matched
       if (matchedRecord2Indices.has(r2.index)) continue;
 
-      if (r1.amount !== r2.amount) continue; // strict rule
+      // Strict rule: amount must match
+      if (r1.amount !== r2.amount) continue;
+
+      // Date must be within ±5 days
+      if (!isDateWithinTolerance(r1.date, r2.record.date)) continue;
 
       const sim = cosineSimilarity(emb1, r2.emb);
 
@@ -82,4 +115,3 @@ export async function matchRecords(
     unmatchedInRecord2,
   };
 }
-

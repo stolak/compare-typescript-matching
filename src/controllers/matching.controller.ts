@@ -2,7 +2,7 @@ import type { Request, Response, NextFunction } from "express";
 import { matchRecords } from "../services/matching.service.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { ApiError } from "../utils/ApiError.js";
-import type { BankRecord } from "../types/index.js";
+import type { BankRecord1, BankRecord2 } from "../types/index.js";
 
 export async function matchRecordsController(
   req: Request,
@@ -13,8 +13,8 @@ export async function matchRecordsController(
     const { record1, record2 } = req.body;
 
     const report = await matchRecords(
-      record1 as BankRecord[],
-      record2 as BankRecord[]
+      record1 as BankRecord1[],
+      record2 as BankRecord2[]
     );
 
     const response = ApiResponse.success(

@@ -1,5 +1,5 @@
 import OpenAI from "openai";
-import type { BankRecord } from "../types/index.js";
+import type { BankRecord1, BankRecord2 } from "../types/index.js";
 import log from "../utils/logger.js";
 import { config } from "../config/index.js";
 
@@ -79,7 +79,7 @@ async function processChunk(
   chunk: unknown[],
   chunkIndex: number,
   totalChunks: number
-): Promise<BankRecord[]> {
+): Promise<BankRecord2[]> {
   const userPrompt = `Convert the following unstructured data to the required BankRecord format:\n\n${JSON.stringify(
     chunk,
     null,
@@ -104,7 +104,7 @@ async function processChunk(
   }
 
   // Parse the JSON response
-  let parsedResponse: { records?: BankRecord[]; [key: string]: unknown };
+  let parsedResponse: { records?: BankRecord2[]; [key: string]: unknown };
   try {
     parsedResponse = JSON.parse(content);
   } catch (parseError) {
@@ -116,7 +116,7 @@ async function processChunk(
       // Try to extract JSON array directly
       const arrayMatch = content.match(/\[[\s\S]*\]/);
       if (arrayMatch) {
-        return JSON.parse(arrayMatch[0]) as BankRecord[];
+        return JSON.parse(arrayMatch[0]) as BankRecord2[];
       }
       throw new Error(
         `Failed to parse OpenAI response for chunk ${
@@ -129,13 +129,13 @@ async function processChunk(
   }
 
   // Handle different response formats
-  let records: BankRecord[];
+  let records: BankRecord2[];
   if (Array.isArray(parsedResponse)) {
-    records = parsedResponse as BankRecord[];
+    records = parsedResponse as BankRecord2[];
   } else if (Array.isArray(parsedResponse.records)) {
     records = parsedResponse.records;
   } else if (Array.isArray(parsedResponse.data)) {
-    records = parsedResponse.data as BankRecord[];
+    records = parsedResponse.data as BankRecord2[];
   } else {
     throw new Error(
       `Unexpected response format from OpenAI for chunk ${
@@ -150,7 +150,7 @@ async function processChunk(
 /**
  * Validates and cleans bank records
  */
-function validateAndCleanRecords(records: BankRecord[]): BankRecord[] {
+function validateAndCleanRecords(records: BankRecord2[]): BankRecord2[] {
   return records.map((record, index) => {
     if (!record.itemid) {
       record.itemid = `generated-${Date.now()}-${index}`;
@@ -168,7 +168,7 @@ function validateAndCleanRecords(records: BankRecord[]): BankRecord[] {
 
 export async function convertToBankRecords(
   unstructuredData: unknown[]
-): Promise<BankRecord[]> {
+): Promise<BankRecord2[]> {
   if (!config.openai.apiKey) {
     throw new Error(
       "OPENAI_API_KEY is not configured. Please set it in your environment variables."
@@ -193,7 +193,7 @@ export async function convertToBankRecords(
     // Start processing all chunks in parallel
     const chunkPromises = chunks.map((chunk, index) => {
       if (!chunk) {
-        return Promise.resolve([] as BankRecord[]);
+        return Promise.resolve([] as BankRecord2[]);
       }
       log.info(
         `Starting chunk ${index + 1}/${totalChunks} (${chunk.length} records)`
@@ -205,7 +205,7 @@ export async function convertToBankRecords(
     const results = await Promise.allSettled(chunkPromises);
 
     // Process results and merge
-    const allRecords: BankRecord[] = [];
+    const allRecords: BankRecord2[] = [];
     const errors: string[] = [];
 
     results.forEach((result, index) => {

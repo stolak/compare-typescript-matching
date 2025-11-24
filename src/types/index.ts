@@ -9,7 +9,6 @@ export interface BankRecord1 {
   details: string;
   amount: number;
   date: string;
-  transactionType: string;
 }
 
 export interface BankRecord2 {
@@ -17,6 +16,7 @@ export interface BankRecord2 {
   details: string;
   amount: number;
   date: string;
+  transactionType: string;
 }
 
 export interface MatchResult {

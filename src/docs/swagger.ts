@@ -8,7 +8,7 @@ export const swaggerOptions: swaggerJsdoc.Options = {
       title: "Record Matching API",
       version: "1.0.0",
       description:
-        "API for matching bank records using semantic similarity. Returns three scenarios: matched records, unmatched records from record1, and unmatched records from record2.",
+        "API for matching bank records using semantic similarity. Matching criteria includes exact amount match, date within ±5 days, and semantic similarity score >= 0.25. Returns three scenarios: matched records, unmatched records from record1, and unmatched records from record2.",
       contact: {
         name: "API Support",
       },
@@ -21,9 +21,9 @@ export const swaggerOptions: swaggerJsdoc.Options = {
     ],
     components: {
       schemas: {
-        BankRecord: {
+        BankRecord1: {
           type: "object",
-          required: ["itemid", "details", "amount"],
+          required: ["itemid", "details", "amount", "date"],
           properties: {
             itemid: {
               type: "string",
@@ -40,6 +40,44 @@ export const swaggerOptions: swaggerJsdoc.Options = {
               type: "number",
               description: "Transaction amount",
               example: 106000,
+            },
+            date: {
+              type: "string",
+              description: "Transaction date in YYYY-MM-DD format",
+              example: "2025-01-15",
+            },
+          },
+        },
+        BankRecord2: {
+          type: "object",
+          required: ["itemid", "details", "amount", "date", "transactionType"],
+          properties: {
+            itemid: {
+              type: "string",
+              description: "Unique identifier for the record",
+              example: "ae628341-e022-4d18-9d7b-a46d140a55e5",
+            },
+            details: {
+              type: "string",
+              description: "Transaction details/narration",
+              example:
+                "TRF FRM RCCG HOUSE OF OBEDEDOM PARISH II TO AKINBOBOLA STEPHEN OLAWOLE AT GTB - GTBank Plc Ref/Cheque No.: PSM00068676151167501249 Debits: 106,000.00",
+            },
+            amount: {
+              type: "number",
+              description: "Transaction amount",
+              example: 106000,
+            },
+            date: {
+              type: "string",
+              description: "Transaction date in YYYY-MM-DD format",
+              example: "2025-01-15",
+            },
+            transactionType: {
+              type: "string",
+              description: "Transaction type: credit or debit",
+              example: "debit",
+              enum: ["credit", "debit"],
             },
           },
         },
@@ -59,10 +97,10 @@ export const swaggerOptions: swaggerJsdoc.Options = {
               description: "Similarity score (0-1)",
             },
             record1: {
-              $ref: "#/components/schemas/BankRecord",
+              $ref: "#/components/schemas/BankRecord1",
             },
             record2: {
-              $ref: "#/components/schemas/BankRecord",
+              $ref: "#/components/schemas/BankRecord2",
             },
           },
         },
@@ -79,7 +117,7 @@ export const swaggerOptions: swaggerJsdoc.Options = {
             unmatchedInRecord1: {
               type: "array",
               items: {
-                $ref: "#/components/schemas/BankRecord",
+                $ref: "#/components/schemas/BankRecord1",
               },
               description:
                 "Records from record1 that didn't match any record in record2",
@@ -87,7 +125,7 @@ export const swaggerOptions: swaggerJsdoc.Options = {
             unmatchedInRecord2: {
               type: "array",
               items: {
-                $ref: "#/components/schemas/BankRecord",
+                $ref: "#/components/schemas/BankRecord2",
               },
               description:
                 "Records from record2 that didn't match any record in record1",
@@ -101,16 +139,17 @@ export const swaggerOptions: swaggerJsdoc.Options = {
             record1: {
               type: "array",
               items: {
-                $ref: "#/components/schemas/BankRecord",
+                $ref: "#/components/schemas/BankRecord1",
               },
-              description: "First set of records to match",
+              description: "First set of records to match (must include date)",
             },
             record2: {
               type: "array",
               items: {
-                $ref: "#/components/schemas/BankRecord",
+                $ref: "#/components/schemas/BankRecord2",
               },
-              description: "Second set of records to match against",
+              description:
+                "Second set of records to match against (must include date and transactionType)",
             },
           },
         },
@@ -173,9 +212,10 @@ export const swaggerOptions: swaggerJsdoc.Options = {
                 records: {
                   type: "array",
                   items: {
-                    $ref: "#/components/schemas/BankRecord",
+                    $ref: "#/components/schemas/BankRecord2",
                   },
-                  description: "Converted BankRecord array",
+                  description:
+                    "Converted BankRecord2 array (includes itemid, details, amount, date, and transactionType)",
                 },
                 count: {
                   type: "number",
@@ -186,7 +226,7 @@ export const swaggerOptions: swaggerJsdoc.Options = {
             message: {
               type: "string",
               example:
-                "Successfully converted unstructured data to BankRecord format",
+                "Successfully converted unstructured data to BankRecord2 format",
             },
           },
         },

@@ -44,7 +44,7 @@ export const swaggerOptions: swaggerJsdoc.Options = {
             date: {
               type: "string",
               description: "Transaction date in YYYY-MM-DD format",
-              example: "2025-01-15",
+              example: "2024-06-08",
             },
           },
         },

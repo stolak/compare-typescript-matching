@@ -40,14 +40,12 @@ Rules:
 3. Extract the amount as a number (remove currency symbols, commas, convert to number)
 4. Extract the transaction type as a string: "credit" or "debit"
 5. Extract the transaction date as a string in YYYY-MM-DD format
-6. If the transaction type is not mentioned, assume it is "debit"
-7. If the transaction date is not mentioned, assume it is the current date
-8. If any field is missing, make reasonable inferences or use placeholder values
-9. Return ONLY a valid JSON array directly, no wrapper object, no additional text or markdown
-10. Ensure all amounts are numbers, not strings
-11. where debit is mentioned and the value is greater than 0, that should be the amount
-12. where credit is mentioned and the value is greater than 0, that should be the amount
-13. The response must be a JSON array starting with [ and ending with ]
+4. If any field is missing, make reasonable inferences or use placeholder values
+5. Return ONLY a valid JSON array directly, no wrapper object, no additional text or markdown
+6. Ensure all amounts are numbers, not strings
+7. where debit is mentioned and the value is greater than 0, that should be the amount
+8. where credit is mentioned and the value is greater than 0, that should be the amount
+7. The response must be a JSON array starting with [ and ending with ]
 
 Example input:
 [
@@ -57,8 +55,8 @@ Example input:
 
 Example output:
 [
-  {"itemid": "TXN001", "details": "Payment to John", "amount": 1000, "transactionType": "credit", "date": "2025-01-01"},
-  {"itemid": "REF002", "details": "Salary credit", "amount": 500, "transactionType": "credit", "date": "2025-01-01"}
+  {"itemid": "TXN001", "details": "Payment to John", "amount": 1000},
+  {"itemid": "REF002", "details": "Salary credit", "amount": 500}
 ]`;
 
 const MAX_RECORDS_PER_CHUNK = 20;
